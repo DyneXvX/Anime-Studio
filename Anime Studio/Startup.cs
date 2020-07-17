@@ -12,6 +12,8 @@ using Anime_Studio.DataAccess.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Anime_Studio.DataAccess.Data.Repository.IRepository;
+using Anime_Studio.DataAccess.Data.Repository;
 
 namespace Anime_Studio
 {
@@ -32,6 +34,7 @@ namespace Anime_Studio
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
         }
