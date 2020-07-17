@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Anime_Studio.Data
+namespace Anime_Studio.DataAccess.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Anime_Studio.Models
+namespace Anime_Studio.Models.ViewModels
 {
     public class ErrorViewModel
     {
