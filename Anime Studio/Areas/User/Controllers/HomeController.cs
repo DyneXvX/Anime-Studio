@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Anime_Studio.Models.ViewModels;
 
-namespace Anime_Studio.Controllers
+namespace Anime_Studio.Areas.User.Controllers
 {
+
+    [Area("User")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
