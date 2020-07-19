@@ -15,5 +15,7 @@ namespace Anime_Studio.DataAccess.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Manga> Mangas{ get; set; }
     }
 }
