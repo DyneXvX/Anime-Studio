@@ -68,9 +68,6 @@ namespace Anime_Studio.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VolumeNumber")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Mangas");

@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20200717195432_AddCategoryToDb.Designer.cs" />
     <Compile Remove="Migrations\20200719210607_extra.cs" />
     <Compile Remove="Migrations\20200719210607_extra.Designer.cs" />
+    <Compile Remove="Migrations\20200719213029_update.cs" />
+    <Compile Remove="Migrations\20200719213029_update.Designer.cs" />
+    <Compile Remove="Migrations\20200719213711_setup.cs" />
+    <Compile Remove="Migrations\20200719213711_setup.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
