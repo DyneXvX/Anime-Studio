@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Anime Studio.Utility\Anime Studio.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

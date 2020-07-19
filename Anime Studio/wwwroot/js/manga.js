@@ -8,14 +8,16 @@ $(document).ready(function() {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Admin/Manga/GetAll"
+            "url": "/Admin/Manga/GetAll",
+            "url2": "/Admin/Category/GetAll"
         },
         "columns": [
-            { "data": "title", "width": "15%" },
-            { "data": "author", "width": "15%" },
-            { "data": "artist", "width": "15%" },
-            { "data": "publishingCompany", "width": "15%"},
-            {"data": "price", "width": "15%"},
+            { "data": "title", "width": "10%" },
+            { "data": "volumeNumber", "width": "10%" },
+            { "data": "author", "width": "10%" },
+            { "data": "artist", "width": "10%" },
+            { "data": "price", "width": "10%" },
+            { "data": "isbn", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -29,7 +31,7 @@ function loadDataTable() {
                                 </a>
                             </div>
                             `;
-                }, "width": "15%"
+                }, "width": "10%"
             }
         ]
     });
