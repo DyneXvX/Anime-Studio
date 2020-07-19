@@ -2,7 +2,7 @@
 @{
     
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var title = "Create Manga";
+    var title = "Add a Manga";
 }
 
 <form method="post">
@@ -24,7 +24,43 @@
                     <input asp-for="Title" class="form-control"/>
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
+                <div class="col-4">
+                    <label asp-for="Author"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Author" class="form-control"/>
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="Artist"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Artist" class="form-control"/>
+                    <span asp-validation-for="Artist" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="PublishingCompany"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="PublishingCompany" class="form-control"/>
+                    <span asp-validation-for="PublishingCompany" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="ISBN"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="ISBN" class="form-control"/>
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="Price"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Price" class="form-control"/>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="form-group row">
                 <div class="col-8 offset-4">
                     @if (Model.Id != 0)
@@ -33,7 +69,7 @@
                     }
                     else
                     {
-                        <partial name="_CreateAndBackToListButton"/>
+                        <partial name="_CreateAndBackToListButton" />
                     }
                 </div>
             </div>

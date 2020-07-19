@@ -11,8 +11,11 @@ function loadDataTable() {
             "url": "/Admin/Manga/GetAll"
         },
         "columns": [
-            { "data": "title", "width": "25%" },
-            { "data": "author", "width": "25%"},
+            { "data": "title", "width": "15%" },
+            { "data": "author", "width": "15%" },
+            { "data": "artist", "width": "15%" },
+            { "data": "publishingCompany", "width": "15%"},
+            {"data": "price", "width": "15%"},
             {
                 "data": "id",
                 "render": function (data) {
@@ -26,7 +29,7 @@ function loadDataTable() {
                                 </a>
                             </div>
                             `;
-                }, "width": "40%"
+                }, "width": "15%"
             }
         ]
     });
