@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200717195432_AddCategoryToDb.cs" />
     <Compile Remove="Migrations\20200717195432_AddCategoryToDb.Designer.cs" />
+    <Compile Remove="Migrations\20200719210607_extra.cs" />
+    <Compile Remove="Migrations\20200719210607_extra.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

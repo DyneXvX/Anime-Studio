@@ -8,12 +8,10 @@ $(document).ready(function() {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Admin/Manga/GetAll",
-            "url2": "/Admin/Category/GetAll"
+            "url": "/Admin/Manga/GetAll"
         },
         "columns": [
             { "data": "title", "width": "10%" },
-            { "data": "volumeNumber", "width": "10%" },
             { "data": "author", "width": "10%" },
             { "data": "artist", "width": "10%" },
             { "data": "price", "width": "10%" },

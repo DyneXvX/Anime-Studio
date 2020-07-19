@@ -28,7 +28,6 @@ namespace Anime_Studio.DataAccess.Data.Repository
                 objFromDb.Artist = manga.Artist;
                 objFromDb.ISBN = manga.ISBN;
                 objFromDb.PublishingCompany = manga.PublishingCompany;
-                objFromDb.VolumeNumber = manga.VolumeNumber;
                 objFromDb.Price = manga.Price;
                 objFromDb.Cover = manga.Cover;
             }
