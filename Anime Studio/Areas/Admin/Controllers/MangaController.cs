@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
 using Anime_Studio.Models;
+using Anime_Studio.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Anime_Studio.Areas.Admin.Controllers
 {
@@ -14,10 +17,12 @@ namespace Anime_Studio.Areas.Admin.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _hostEnvironment; // for the images required for the cover.
 
-        public MangaController(IUnitOfWork unitOfWork)
+        public MangaController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _hostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -27,27 +32,35 @@ namespace Anime_Studio.Areas.Admin.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            Manga manga = new Manga();
+            MangaVM mangaVM = new MangaVM()
+            {
+                Manga = new Manga(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(i=> new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
 
             if (id == null)
             {
                 //this is a new manga
-                return View(manga);
+                return View(mangaVM);
             }
             //this is for edit request
-            manga = _unitOfWork.Manga.Get(id.GetValueOrDefault());
+            mangaVM.Manga = _unitOfWork.Manga.Get(id.GetValueOrDefault());
 
-            if (manga == null)
+            if (mangaVM.Manga == null)
             {
                 return NotFound();
             }
 
-            return View(manga);
+            return View(mangaVM);
 
             
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(Manga manga)
         {
@@ -70,7 +83,7 @@ namespace Anime_Studio.Areas.Admin.Controllers
             }
 
             return View(manga);
-        }
+        }*/
 
 
 
@@ -80,7 +93,7 @@ namespace Anime_Studio.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var allObj = _unitOfWork.Manga.GetAll();
+            var allObj = _unitOfWork.Manga.GetAll(includeProperties:"Category");
             return Json(new {data = allObj});
         }
 

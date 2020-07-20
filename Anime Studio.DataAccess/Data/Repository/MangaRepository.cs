@@ -23,13 +23,19 @@ namespace Anime_Studio.DataAccess.Data.Repository
             
             if (objFromDb != null)
             {
+                if (manga.Cover != null)
+                {
+                    objFromDb.Cover = manga.Cover;
+                }
                 objFromDb.Title = manga.Title;
+                objFromDb.VolumeNumber = manga.VolumeNumber;
                 objFromDb.Author = manga.Author;
                 objFromDb.Artist = manga.Artist;
                 objFromDb.ISBN = manga.ISBN;
                 objFromDb.PublishingCompany = manga.PublishingCompany;
                 objFromDb.Price = manga.Price;
                 objFromDb.Cover = manga.Cover;
+                objFromDb.CategoryId = manga.CategoryId;
             }
         }
 

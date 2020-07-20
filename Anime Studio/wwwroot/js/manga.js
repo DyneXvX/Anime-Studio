@@ -12,9 +12,9 @@ function loadDataTable() {
         },
         "columns": [
             { "data": "title", "width": "10%" },
+            { "data": "volumeNumber", "width": "10%" },
             { "data": "author", "width": "10%" },
             { "data": "artist", "width": "10%" },
-            { "data": "price", "width": "10%" },
             { "data": "isbn", "width": "10%" },
             {
                 "data": "id",
@@ -29,7 +29,7 @@ function loadDataTable() {
                                 </a>
                             </div>
                             `;
-                }, "width": "10%"
+                }, "width": "30%"
             }
         ]
     });

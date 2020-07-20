@@ -1,81 +1,120 @@
-﻿@model Anime_Studio.Models.Manga;
+﻿@model Anime_Studio.Models.ViewModels.MangaVM;
 @{
     
     Layout = "~/Views/Shared/_Layout.cshtml";
     var title = "Add a Manga";
 }
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.Id != 0)
+        @if (Model.Manga.Id != 0)
         {
             title = "Edit Manga";
+            <input type="hidden" asp-for="Manga.Id" />
         }
-        <div class="col-12 border-bottom">
+        <div class="col-8 border-bottom">
             <h2 class="text-primary">@title</h2>
         </div>
-        <div class="col-6 pt-4">
+        <div class="col-8 pt-4">
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Title"></label>
+                    <label asp-for="Manga.Title"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Title" class="form-control"/>
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <input asp-for="Manga.Title" class="form-control"/>
+                    <span asp-validation-for="Manga.Title" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Author"></label>
+                    <label asp-for="Manga.VolumeNumber"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Author" class="form-control"/>
-                    <span asp-validation-for="Author" class="text-danger"></span>
+                    <input asp-for="Manga.VolumeNumber" class="form-control"/>
+                    <span asp-validation-for="Manga.VolumeNumber" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Artist"></label>
+                    <label asp-for="Manga.Author"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Artist" class="form-control"/>
-                    <span asp-validation-for="Artist" class="text-danger"></span>
+                    <input asp-for="Manga.Author" class="form-control"/>
+                    <span asp-validation-for="Manga.Author" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="PublishingCompany"></label>
+                    <label asp-for="Manga.Artist"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="PublishingCompany" class="form-control"/>
-                    <span asp-validation-for="PublishingCompany" class="text-danger"></span>
+                    <input asp-for="Manga.Artist" class="form-control"/>
+                    <span asp-validation-for="Manga.Artist" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="ISBN"></label>
+                    <label asp-for="Manga.ISBN"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="ISBN" class="form-control"/>
-                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                    <input asp-for="Manga.ISBN" class="form-control"/>
+                    <span asp-validation-for="Manga.ISBN" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Price"></label>
+                    <label asp-for="Manga.PublishingCompany"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Price" class="form-control"/>
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                    <input asp-for="Manga.PublishingCompany" class="form-control"/>
+                    <span asp-validation-for="Manga.PublishingCompany" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Cover"></label>
+                    <label asp-for="Manga.Price"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Cover" class="form-control"/>
-                    <span asp-validation-for="Cover" class="text-danger"></span>
+                    <input asp-for="Manga.Price" class="form-control"/>
+                    <span asp-validation-for="Manga.Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Category
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Manga.CategoryId, Model.CategoryList, "-Select a Category",
+                        new { @class = "form-control" })
+                    <span asp-validation-for="Manga.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Cover
+                </div>
+                <div class="col-8">
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                    <span asp-validation-for="Manga.CategoryId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-8 offset-4">
-                    @if (Model.Id != 0)
+                    @if (Model.Manga.Id != 0)
                     {
-                        <partial name="_EditAndBackToListButton" model="Model.Id" />
+                        <partial name="_EditAndBackToListButton" model="Model.Manga.Id" />
                     }
                     else
                     {
-                        <partial name="_CreateAndBackToListButton" />
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" onclick="return validateInput()" class="btn btn-primary from-control" style="width:100%">Create</button>       
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-primary form-control" style="width:100%">Back to List</a>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
@@ -84,7 +123,25 @@
 </form>
 
 @section Scripts{
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="https://cdn.tiny.clout/1/n94ifuzv190pchikopiwqz2esrw8n28wcywvpejlqrregfp/tinymce/5/tinymce.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'list',
+            menubar: 'file edit format'
+        });
+
+
+        function validateInput() {
+            if (document.getElementById("uploadBox").value = "") {
+                swal("Error", "Please select an image", "error");
+                return false;
+            }
+            return true;
+        }
+    </script>
 }
 
 
