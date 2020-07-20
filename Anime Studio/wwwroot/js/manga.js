@@ -10,6 +10,9 @@ function loadDataTable() {
         "ajax": {
             "url": "/Admin/Manga/GetAll"
         },
+        "scrollY": "200px",
+        "scrollCollapse": true,
+        "paging": false,
         "columns": [
             { "data": "title", "width": "10%" },
             { "data": "volumeNumber", "width": "10%" },

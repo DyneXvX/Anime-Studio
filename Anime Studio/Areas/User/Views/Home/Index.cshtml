@@ -1,14 +1,31 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Manga>
 
+<div class="row pb-3 backgroundWhite">
 
-<h1 class="text-center">
-    Anime Management System
-</h1>
-<div class="col-4">
-    <p>
-        Welcome to my anime management system.
-    </p>
-    <p>This is the users Page.</p>
+    @foreach (var manga in Model.OrderBy(x => x.Title)
+        .ThenBy(x => x.VolumeNumber))
+    {
+        <div class="col-2">
+            <div class="row p-2">
+                <div class="col-12  p-1" style="border: 1px solid #008cba; border-radius: 5px;">
+                    <div class="card" style="border: 0px;">
+                        <img src="@manga.Cover" class="card-img-top rounded"/>
+                        <div class="pl-1">
+                            <p class="card-title h5">
+                                <b style="color: #2c3e50">@manga.Title</b>
+                            </p>
+                            <p class="card-title">Volume Number: <b>@manga.VolumeNumber</b></p>
+                            <p class="card-title text-primary">by <b>@manga.Author</b></p>
+                        </div>
+                        @*<div style="padding-left: 5px;">
+                                <p>List Price: <b class="">@manga.Price.ToString("0.00")</b></p>
+                            </div>*@
+                    </div>
+                    <div >
+                        <a asp-action="Details" class="btn btn-primary form-control" asp-route-id="@manga.Id">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
