@@ -15,7 +15,8 @@ function loadDataTable() {
             { "data": "volumeNumber", "width": "10%" },
             { "data": "author", "width": "10%" },
             { "data": "artist", "width": "10%" },
-            { "data": "isbn", "width": "10%" },
+            { "data": "isbn", "width": "10%"},
+            { "data": "category.name", "width": "10%"},
             {
                 "data": "id",
                 "render": function (data) {

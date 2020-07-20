@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
@@ -60,30 +61,78 @@ namespace Anime_Studio.Areas.Admin.Controllers
             
         }
 
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Manga manga)
+        public IActionResult Upsert(MangaVM mangavm)
         {
             if (ModelState.IsValid)
             {
 
-                if (manga.Id == 0)
+                string webRootPath = _hostEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
                 {
-                    _unitOfWork.Manga.Add(manga);
+                    string filename = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(webRootPath, @"images\mangas");
+                    var extenstion = Path.GetExtension(files[0].FileName);
+
+                    if (mangavm.Manga.Cover != null)
+                    {
+                        //this is to edit the cover and remove the old image.
+                        var imagePath = Path.Combine(webRootPath, mangavm.Manga.Cover.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+
+                    using (var filesStreams =
+                        new FileStream(Path.Combine(uploads, filename + extenstion), FileMode.Create))
+                    {
+                        files[0].CopyTo(filesStreams);
+                    }
+
+                    mangavm.Manga.Cover = @"\images\mangas\" + filename + extenstion;
+                }
+                else
+                {
+                    //update if the cover is not changed.
+                    if (mangavm.Manga.Id != 0)
+                    {
+                        Manga objFromDb = _unitOfWork.Manga.Get(mangavm.Manga.Id);
+                        mangavm.Manga.Cover = objFromDb.Cover;
+                    }
+                }
+
+                if (mangavm.Manga.Id == 0)
+                {
+                    _unitOfWork.Manga.Add(mangavm.Manga);
                     _unitOfWork.Save();
                 }
                 else
                 {
-                    _unitOfWork.Manga.Update(manga);
+                    _unitOfWork.Manga.Update(mangavm.Manga);
                 }
 
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
 
             }
+            else
+            {
+                mangavm.CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+            }
 
-            return View(manga);
-        }*/
+            if (mangavm.Manga.Id != 0)
+            {
+                mangavm.Manga = _unitOfWork.Manga.Get(mangavm.Manga.Id);
+            }
+            return View(mangavm);
+        }
 
 
 
@@ -104,6 +153,12 @@ namespace Anime_Studio.Areas.Admin.Controllers
             if (objFromDb == null)
             {
                 return Json(new {success = false, message = "Error while deleting"});
+            }
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var imagePath = Path.Combine(webRootPath, objFromDb.Cover.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
             }
 
             _unitOfWork.Manga.Remove(objFromDb);
