@@ -16,6 +16,8 @@ namespace Anime_Studio.Models
         public string State { get; set; }
         public string PostalCode { get; set; }
         
+        [Required] public string UserId { get; set; }
+        
         [NotMapped]
         public string  Role { get; set; }
     }

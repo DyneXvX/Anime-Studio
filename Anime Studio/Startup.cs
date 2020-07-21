@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
 using Anime_Studio.DataAccess.Data.Repository;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Anime_Studio.Utility;
 
 namespace Anime_Studio
 {
@@ -27,13 +29,15 @@ namespace Anime_Studio
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        //services.AddDefaultIdentity<IdentityUser> does not have support for roles. this was the starter and I had to change it to what is below.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddSingleton<IEmailSender, EmailSender>(); //this uses the EmailSender Class built in Utility to bypass the email registration error.
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
