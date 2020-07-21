@@ -12,6 +12,8 @@ namespace Anime_Studio.DataAccess.Data.Repository.IRepository
         IMangaRepository Manga { get; }
         ISP_Call SP_Call{ get; }
 
+        IApplicationUserRepository ApplicationUser{ get; }
+
         void Save();
     }
 }
