@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -85,11 +87,23 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
             public string UserId { get; set; }
             public string Role { get; set; }
 
+            public IEnumerable<SelectListItem> RoleList  { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
+            Input = new InputModel
+            {
+                RoleList = _roleManger.Roles.Where(u=>u.Name != Sd.RoleUser).Select(x=>x.Name).Select(i=> new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                    
+                })
+            };
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -102,6 +116,7 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
 
                 var user = new ApplicationUser
                 {
+                    
                     UserName = Input.Email,
                     Email = Input.Email,
                     StreetAddress = Input.StreetAddress,
@@ -127,8 +142,16 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
                         await _roleManger.CreateAsync(new IdentityRole(Sd.RoleUser));
                     }
 
-                    await _userManager.AddToRoleAsync(user, Sd.RoleAdmin); //anyone that registers will be given admin by default.
+                    //await _userManager.AddToRoleAsync(user, Sd.RoleAdmin); //anyone that registers will be given admin by default.
 
+                    if (user.Role ==  null)
+                    {
+                        await _userManager.AddToRoleAsync(user, Sd.RoleUser);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, user.Role);
+                    }
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -147,8 +170,17 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.Role == null)
+                        {
+
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            //admin is registering a new user
+                            return RedirectToAction("Index", "User", new {Area = "Admin"});
+                        }
                     }
                 }
                 foreach (var error in result.Errors)

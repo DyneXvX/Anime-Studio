@@ -8,5 +8,6 @@ namespace Anime_Studio.Utility
     {
         public const string RoleUser = "User";
         public const string RoleAdmin = "Admin";
+       
     }
 }

@@ -35,7 +35,11 @@ namespace Anime_Studio
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+            services.AddIdentity<IdentityUser, IdentityRole>(o =>
+                {
+                    o.Password.RequireNonAlphanumeric = false;
+                })
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSingleton<IEmailSender, EmailSender>(); //this uses the EmailSender Class built in Utility to bypass the email registration error.
             services.AddScoped<IUnitOfWork, UnitOfWork>();
