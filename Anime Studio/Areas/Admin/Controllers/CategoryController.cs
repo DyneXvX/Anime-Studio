@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
 using Anime_Studio.Models;
+using Anime_Studio.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anime_Studio.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
+    [Authorize(Roles = Sd.RoleAdmin)]
     public class CategoryController : Controller
     {
 
