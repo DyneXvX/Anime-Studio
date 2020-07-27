@@ -45,9 +45,31 @@ function loadDataTable() {
                 },
                 "width": "25%"
             }
-        ]
+        ],
+        "initComplete": function () {
+            this.api().columns([2]).every(function () {
+                var column = this;
+                var select = $('<select><option value="">Filter Results</option></select>')
+                    //.appendTo($(column.footer()).empty())
+                    .appendTo('#dropdown')
+                    .on('change',
+                        function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
     });
-    $("#tblData tfoot th").each(function () {
+/*    $("#tblData tfoot th").each(function () {
         var title = $("#tblData thead th").eq($(this).index()).text();
         $(this).html('<input type="text" placeholder="Search ' + title + ' " />');
     });
@@ -58,7 +80,17 @@ function loadDataTable() {
         $(this.footer()).find('input').on('keyup change', function () {
             datatableColumn.search(this.value).draw();
         });
-    });
+    });*/
+
+    //var indexCol = 2;
+    //$("#tblData tfoot th").each(function (i) {
+    //    if (i === indexCol) {
+    //        this.innerHTML = fnCreateSelect(tblData.fnGetColumnData(i));
+    //        $('select', this).change(function() {
+    //            tblData.fnFilter($(this).val(), i);//            
+    //        });
+    //    }
+    //});
 }
 
 
