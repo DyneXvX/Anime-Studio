@@ -69,7 +69,8 @@ function loadDataTable() {
             });
         }
     });
-/*    $("#tblData tfoot th").each(function () {
+/*  Setup for underneath search function per column... Don't care for these. 
+ $("#tblData tfoot th").each(function () {
         var title = $("#tblData thead th").eq($(this).index()).text();
         $(this).html('<input type="text" placeholder="Search ' + title + ' " />');
     });

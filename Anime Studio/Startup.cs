@@ -35,9 +35,10 @@ namespace Anime_Studio
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(o =>
+            services.AddIdentity<IdentityUser, IdentityRole>(configure =>
                 {
-                    o.Password.RequireNonAlphanumeric = false;
+                    configure.Password.RequireNonAlphanumeric = false;
+                    
                 })
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -50,6 +51,7 @@ namespace Anime_Studio
                 options.LoginPath = $"/Identity/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                
             });
         }
 
