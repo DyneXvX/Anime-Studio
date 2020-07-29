@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Anime_Studio.Models;
+using Anime_Studio.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -51,6 +53,17 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            public string Name { get; set; }
+
+            [Display(Name = "Street Address")]
+            public string StreetAddress { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+
+            [Display(Name = "Postal Code")]
+            public string PostalCode { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -101,7 +114,8 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        Name = info.Principal.FindFirstValue(ClaimTypes.Name)
                     };
                 }
                 return Page();
@@ -121,11 +135,23 @@ namespace Anime_Studio.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    StreetAddress = Input.StreetAddress,
+                    City = Input.City,
+                    State = Input.State,
+                    PostalCode = Input.PostalCode,
+                    Name = Input.Name
+                    
+                };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, Sd.RoleUser); //This allows ext registration to be User Role Only.
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {

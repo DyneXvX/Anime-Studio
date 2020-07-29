@@ -53,6 +53,19 @@ namespace Anime_Studio
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
                 
             });
+            //facebook developers website
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "3481951235162418";
+                options.AppSecret = "9be27a4dd281ad2baddbbfac4e81af6e";
+            });
+
+            //console.developers.google
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "46274366970-nlg05m7o551psvdv2kcaglevclmk10oj.apps.googleusercontent.com";
+                options.ClientSecret = "_wiMuYJQJ028aLJHfP1Q511p";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
