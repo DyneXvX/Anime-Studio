@@ -53,18 +53,18 @@ namespace Anime_Studio
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
                 
             });
-            //facebook developers website
+            //facebook developers website --> Add Nuget Package for Facebook Authentication as well
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = "3481951235162418";
-                options.AppSecret = "9be27a4dd281ad2baddbbfac4e81af6e";
+                options.AppId = "453481951235162418";
+                options.AppSecret = "849be27a4dd281ad2baddbbfac4e81af6e";
             });
 
-            //console.developers.google
+            //console.developers.google --> Add Nuget Package for Google Authentication as well.
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "46274366970-nlg05m7o551psvdv2kcaglevclmk10oj.apps.googleusercontent.com";
-                options.ClientSecret = "_wiMuYJQJ028aLJHfP1Q511p";
+                options.ClientId = "4546274366970-nlg05m7o551psvdv2kcaglevclmk10oj.apps.googleusercontent.com";
+                options.ClientSecret = "84_wiMuYJQJ028aLJHfP1Q511p";
             });
         }
 
