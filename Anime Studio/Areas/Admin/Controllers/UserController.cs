@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Anime_Studio.DataAccess.Data;
+using Anime_Studio.DataAccess.Data.Repository;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
 using Anime_Studio.Models;
 using Anime_Studio.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anime_Studio.Areas.Admin.Controllers
@@ -18,12 +20,12 @@ namespace Anime_Studio.Areas.Admin.Controllers
     public class UserController : Controller
     {
 
-        //private readonly IUnitOfWork _unitOfWork; Removing UnitOfWork for this example. 
+        private readonly IUnitOfWork _unitOfWork; 
         private readonly ApplicationDbContext _db;             
 
-        public UserController(ApplicationDbContext db)
+        public UserController(ApplicationDbContext db, IUnitOfWork unitOfWork )
         {
-           
+            _unitOfWork = unitOfWork;
             _db = db;
         }
 
@@ -38,11 +40,12 @@ namespace Anime_Studio.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            var userList1 = _unitOfWork.ApplicationUser.GetAll();
             var userList = _db.ApplicationUsers.ToList();
             var userRole = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
 
-            foreach (var user in userList)
+            foreach (var user in userList1)
             {
                 var roleId = userRole.FirstOrDefault(u => u.UserId == user.Id).RoleId;
                 user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
@@ -55,8 +58,8 @@ namespace Anime_Studio.Areas.Admin.Controllers
         public IActionResult LockUnlock([FromBody] string id)
         {
             var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
-
-            if (objFromDb == null)
+            var objFromDb1 = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == id);
+            if (objFromDb1 == null)
             {
                 return Json(new {success = false, message = "Error while locking/unlocking"});
             }
