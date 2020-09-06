@@ -11,10 +11,12 @@ namespace Anime_Studio.DataAccess.Data.Repository
     public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
     {
         private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ApplicationUserRepository(ApplicationDbContext db) : base(db)
+        public ApplicationUserRepository(ApplicationDbContext db, IUnitOfWork unitOfWork) : base(db)
         {
             _db = db;
+            _unitOfWork = unitOfWork;
         }
 
     }

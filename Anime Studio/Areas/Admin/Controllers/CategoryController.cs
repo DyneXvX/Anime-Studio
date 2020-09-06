@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Anime_Studio.DataAccess.Data;
 using Anime_Studio.DataAccess.Data.Repository.IRepository;
 using Anime_Studio.Models;
 using Anime_Studio.Utility;
@@ -17,9 +18,11 @@ namespace Anime_Studio.Areas.Admin.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _db;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
+            _db = db;
             _unitOfWork = unitOfWork;
         }
 
@@ -38,7 +41,8 @@ namespace Anime_Studio.Areas.Admin.Controllers
                 return View(category);
             }
             //this is for edit request
-            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
+            //category = _unitOfWork.Category.Get(id.GetValueOrDefault());
+            category = _db.Categories.FirstOrDefault(s => s.Id == id);
 
             if (category == null)
             {

@@ -17,7 +17,7 @@ namespace Anime_Studio.DataAccess.Data.Repository
             _db = db;
             Category = new CategoryRepository(_db);
             Manga = new MangaRepository(_db);
-            ApplicationUser = new ApplicationUserRepository(_db);
+            //ApplicationUser = new ApplicationUserRepository(_db);
             SP_Call = new SP_Call(_db);
 
         }

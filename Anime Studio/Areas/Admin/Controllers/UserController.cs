@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Anime_Studio.DataAccess.Data;
@@ -21,9 +22,10 @@ namespace Anime_Studio.Areas.Admin.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork; 
-        private readonly ApplicationDbContext _db;             
+        private readonly ApplicationDbContext _db;
+       
 
-        public UserController(ApplicationDbContext db, IUnitOfWork unitOfWork )
+        public UserController(ApplicationDbContext db, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _db = db;
@@ -40,12 +42,12 @@ namespace Anime_Studio.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var userList1 = _unitOfWork.ApplicationUser.GetAll();
+            
             var userList = _db.ApplicationUsers.ToList();
             var userRole = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
 
-            foreach (var user in userList1)
+            foreach (var user in userList)
             {
                 var roleId = userRole.FirstOrDefault(u => u.UserId == user.Id).RoleId;
                 user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
@@ -58,8 +60,7 @@ namespace Anime_Studio.Areas.Admin.Controllers
         public IActionResult LockUnlock([FromBody] string id)
         {
             var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
-            var objFromDb1 = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == id);
-            if (objFromDb1 == null)
+            if (objFromDb == null)
             {
                 return Json(new {success = false, message = "Error while locking/unlocking"});
             }
@@ -75,6 +76,23 @@ namespace Anime_Studio.Areas.Admin.Controllers
 
             _db.SaveChanges();
             return Json(new {success = true, message = "Operation Successful."});
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            //var objFromDb = _unitOfWork.Manga.Get(id);
+            var objFromDb1 = _db.ApplicationUsers.FirstOrDefault();
+            if (objFromDb1 == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" }); }
+
+
+            _db.ApplicationUsers.Remove(objFromDb1);
+            //_unitOfWork.Manga.Remove(objFromDb);
+            _db.SaveChanges();
+            //_unitOfWork.Save();
+            return Json(new { success = true, message = "Delete Successful" });
         }
 
 
